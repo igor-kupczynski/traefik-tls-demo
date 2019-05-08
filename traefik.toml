@@ -4,13 +4,18 @@ logLevel = "DEBUG"
 [accessLog]
 
 
-## HTTP only at this point
+## HTTPS termination in traefic
 
-defaultEntryPoints = ["https","http"]
+defaultEntryPoints = ["http", "https"]
 
 [entryPoints]
   [entryPoints.http]
   address = ":80"
+    [entryPoints.http.redirect]
+    entryPoint = "https"
+  [entryPoints.https]
+  address = ":443"
+    [entryPoints.https.tls]
 
 
 ## Docker auto-discovery
@@ -19,3 +24,12 @@ defaultEntryPoints = ["https","http"]
 domain = "traefik.local"
 watch = true
 network = "traefik"
+
+
+# HTTPS certificates
+
+[[tls]]
+  entryPoints = ["https"]
+  [tls.certificate]
+    certFile = "/etc/traefik/certs/server.crt"
+    keyFile = "/etc/traefik/certs/server.key"
