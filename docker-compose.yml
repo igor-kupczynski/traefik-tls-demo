@@ -23,7 +23,14 @@ services:
       # or if setting any `traefik.frontend.*` ignores the `defaultEntryPoints`
       # from the global config
       - "traefik.frontend.entryPoints=http,https"
-
+  snowflake:
+    container_name: "snowflake"
+    image: containous/whoami
+    networks:
+      - traefik
+    labels:
+      - "traefik.frontend.rule=Host:snowflake.traefik.local"
+      - "traefik.frontend.entryPoints=http,https"
 
 networks:
   traefik:

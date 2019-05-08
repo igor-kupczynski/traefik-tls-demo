@@ -16,6 +16,13 @@ defaultEntryPoints = ["http", "https"]
   [entryPoints.https]
   address = ":443"
     [entryPoints.https.tls]
+      sniStrict = true
+      [[entryPoints.https.tls.certificates]]
+      certFile = "/etc/traefik/certs/whoami.crt"
+      keyFile = "/etc/traefik/certs/whoami.key"
+      [[entryPoints.https.tls.certificates]]
+      certFile = "/etc/traefik/certs/snowflake.crt"
+      keyFile = "/etc/traefik/certs/snowflake.key"
 
 
 ## Docker auto-discovery
@@ -24,12 +31,3 @@ defaultEntryPoints = ["http", "https"]
 domain = "traefik.local"
 watch = true
 network = "traefik"
-
-
-# HTTPS certificates
-
-[[tls]]
-  entryPoints = ["https"]
-  [tls.certificate]
-    certFile = "/etc/traefik/certs/server.crt"
-    keyFile = "/etc/traefik/certs/server.key"
