@@ -7,6 +7,8 @@ We use trafik 1.7, as 2.0 is in alpha version at the time of writing.
 
 ## Overview
 
+![Overview](./overview.jpg)
+
 We use docker compose to spin two backend services: `whoami`, `snowflake` and `traefik` to act as a reverse proxy -- it accepts requests at its entrypoints and routes them to the correct backends.
 
 `whoami` and `snowflake` use [whoami](https://github.com/containous/whoami) as a toy server example. They are connected to `traefik` docker network.
