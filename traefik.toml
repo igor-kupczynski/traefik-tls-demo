@@ -1,0 +1,21 @@
+## Let's be verbose in our demo example
+
+logLevel = "DEBUG"
+[accessLog]
+
+
+## HTTP only at this point
+
+defaultEntryPoints = ["https","http"]
+
+[entryPoints]
+  [entryPoints.http]
+  address = ":80"
+
+
+## Docker auto-discovery
+
+[docker]
+domain = "traefik.local"
+watch = true
+network = "traefik"
