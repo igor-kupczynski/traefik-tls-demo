@@ -2,7 +2,7 @@
 
 This is a demo project which shows how to use [traefik](https://traefik.io/) to terminate https connection to a docker container.
 
-We use trafik 1.7, as 2.0 is in alpha version at the time of writing.
+We use traefik 2.0. It's in alpha version at the time of writing this.
 
 
 ## Overview
@@ -122,15 +122,6 @@ WARNING: Network traefik not found.
 
 ### Experiment
 
-Http should redirect to https:
-
-```sh
-$ curl -v http://whoami.traefik.local
-(...)
-< HTTP/1.1 302 Found
-< Location: https://whoami.traefik.local:443/
-```
-
 Traefik should present the certificate we generated earlier on https connections. Since this is a self-signed cert we need to use `--insecure`.
 
 ```sh 
@@ -176,9 +167,21 @@ $ curl --insecure -v https://snowflake.traefik.local
 
 We use [`sniStrict`](https://docs.traefik.io/configuration/entrypoints/#strict-sni-checking) option as it seems better to terminate connection with clients not supporting SNI, instead of present them with some default certificate which likely won't match the domain they are requesting. 
 
-### Test
+### Tests
 
 If you play with the traefik config it is useful to make sure that nothing is broken. We provide a [simple bash test](./tests/verify-certs.bats) which verifies the certificates subjects presented by the backend services.
+
+Tests use [bats](https://github.com/bats-core/bats-core), install it with:
+
+```sh
+# on ubuntu
+$ sudo apt install bats
+```
+
+```sh
+# on macos
+$ brew install bats-core
+```
 
 The `make test` goal will take care of verifying the prerequistes and (re)starting the services.
 

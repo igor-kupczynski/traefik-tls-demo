@@ -46,9 +46,15 @@ restart: down up
 
 ### Tests
 
-# test will (re)start the services, perform the tests and stop if the tests are successful
-.PHONY: test
-test: restart
+# verify performs the tests. It sleeps for a few seconds beforehand to make
+# sure that traefik loads the certificates to its store.
+.PHONY: verify
+verify:
 	@ echo "Testing: "
-	@ bats tests/verify-certs.bats && docker-compose down
+	@ sleep 2
+	@ bats tests/verify-certs.bats
 
+# test (re)starts the services, performs verification and stop the services
+.PHONY: test
+test: restart verify
+	@ docker-compose down

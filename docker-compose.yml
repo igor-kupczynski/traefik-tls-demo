@@ -2,7 +2,7 @@ version: '3.5'
 
 services:
   traefik:
-    image: traefik:v1.7
+    image: traefik:v2.0
     ports:
       - "80:80"
       - "443:443"
@@ -18,19 +18,16 @@ services:
     networks:
       - traefik
     labels:
-      - "traefik.frontend.rule=Host:whoami.traefik.local"
-      # Note: Explicit assignment to the endpoints is needed; not sure if a bug
-      # or if setting any `traefik.frontend.*` ignores the `defaultEntryPoints`
-      # from the global config
-      - "traefik.frontend.entryPoints=http,https"
+      - traefik.http.routers.whoami-https.rule=Host(`whoami.traefik.local`)
+      - traefik.http.routers.whoami-https.tls=true
   snowflake:
     container_name: "snowflake"
     image: containous/whoami
     networks:
       - traefik
     labels:
-      - "traefik.frontend.rule=Host:snowflake.traefik.local"
-      - "traefik.frontend.entryPoints=http,https"
+      - traefik.http.routers.snowflake-https.rule=Host(`snowflake.traefik.local`)
+      - traefik.http.routers.snowflake-https.tls=true
 
 networks:
   traefik:
