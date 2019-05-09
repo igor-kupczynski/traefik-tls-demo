@@ -1,33 +1,42 @@
 ## Let's be verbose in our demo example
 
-logLevel = "DEBUG"
+[global]
+  debug = true
+
+[log]
+  level = "debug"
+
 [accessLog]
 
 
-## HTTPS termination in traefic
-
-defaultEntryPoints = ["http", "https"]
+## HTTPS endpoints
 
 [entryPoints]
-  [entryPoints.http]
-  address = ":80"
-    [entryPoints.http.redirect]
-    entryPoint = "https"
   [entryPoints.https]
-  address = ":443"
-    [entryPoints.https.tls]
-      sniStrict = true
-      [[entryPoints.https.tls.certificates]]
-      certFile = "/etc/traefik/certs/whoami.crt"
-      keyFile = "/etc/traefik/certs/whoami.key"
-      [[entryPoints.https.tls.certificates]]
-      certFile = "/etc/traefik/certs/snowflake.crt"
-      keyFile = "/etc/traefik/certs/snowflake.key"
+    address = ":443"
+
+
+## TLS
+[providers.file]
+watch=true
+
+[[tls]]
+  [tls.certificate]
+    certFile = "/etc/traefik/certs/whoami.crt"
+    keyFile = "/etc/traefik/certs/whoami.key"
+
+[[tls]]
+  [tls.certificate]
+    certFile = "/etc/traefik/certs/snowflake.crt"
+    keyFile = "/etc/traefik/certs/snowflake.key"
+
+[tlsOptions]
+  [tlsOptions.default]
+    sniStrict = true
 
 
 ## Docker auto-discovery
 
-[docker]
-domain = "traefik.local"
-watch = true
-network = "traefik"
+[providers.docker]
+  domain = "traefik.local"
+  network = "traefik"
