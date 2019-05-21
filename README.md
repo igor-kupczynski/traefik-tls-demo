@@ -4,6 +4,8 @@ This is a demo project which shows how to use [traefik](https://traefik.io/) to 
 
 We use traefik 2.0. It's in alpha version at the time of writing this.
 
+This is a companion repo to [my blog post](https://kupczynski.info/2019/05/21/treafik-sni.html) on the subject.
+
 
 ## Overview
 
@@ -19,7 +21,7 @@ Traefik exposes two ports (*entrypoints* in traefik lingo) -- http `:80` and htt
 
 Requests are routed to the respective backends depending on the host -- `whoami.traefik.local` or `snowflake.traefik.local`. If none of the hosts are applicable traefik returns 404.
 
-Each backend service has its own certificate for its unique domian -- `whoami.traefik.local` or `snowflake.traefik.local` -- no wildcards matching both. We use [Server Name Indication (SNI)](https://dzone.com/articles/what-is-sni-server-name-indication-how-does-it-wor) to select the right certificate depending on the host.
+Each backend service has its own certificate for its unique domian -- `whoami.traefik.local` or `snowflake.traefik.local` -- no wildcards matching both. We use [Server Name Indication (SNI)](https://kupczynski.info/2019/05/21/treafik-sni.html) to select the right certificate depending on the host.
 
 In our case the certificates are statically configured in `traefik.toml` file, but in a real world we could use the [file provider](https://docs.traefik.io/configuration/entrypoints/#dynamic-certificates) to add/remove them while traefik is running.
 
